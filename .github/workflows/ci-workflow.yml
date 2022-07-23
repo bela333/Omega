@@ -203,7 +203,7 @@ jobs:
     runs-on: macOS-latest
     if: ${{ github.repository != 'numworks/epsilon-internal' }}
     steps:
-      - run: brew install numworks/tap/epsilon-sdk
+      - run: brew install Yaya-Cout/tap/epsilon-sdk
       - run: pip3 install lz4 pypng stringcase # TODO: should be part of brew formula
       - uses: actions/checkout@v2
       - run: make PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
