@@ -200,15 +200,16 @@ jobs:
           name: epsilon-macos.zip
           path: output/release/simulator/macos/epsilon.app
   ios:
-    if: github.event.inputs.triggerIos == 'yes'
     runs-on: macOS-latest
+    if: ${{ github.repository != 'numworks/epsilon-internal' }}
     steps:
       - run: brew install numworks/tap/epsilon-sdk
+      - run: pip3 install lz4 pypng stringcase # TODO: should be part of brew formula
       - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
-      - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 APPLE_PLATFORM=ios-simulator
+      - run: make PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
+      - run: make PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 epsilon.ipa
+      - run: make PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 test.ipa
+      - run: make PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 APPLE_PLATFORM=ios-simulator
       - uses: actions/upload-artifact@master
         with:
           name: epsilon-ios.ipa
